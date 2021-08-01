@@ -52,9 +52,9 @@ print(x_train.shape)
 print(y_train.shape)
 
 #create scatterplot for training data
-plt.scatter(x_train[:,0], x_train[:,1])
-plt.title("Scatter plot of Training data")
-plt.show()
+#plt.scatter(x_train[:,0], x_train[:,1])
+#plt.title("Scatter plot of Training data")
+#plt.show()
 
 #########################################################
 ######################## SVM ############################
@@ -88,10 +88,10 @@ print("SVs per class: ", classifier.n_support_)
 supportVectors = classifier.support_vectors_
 
 #visualise support vectors
-plt.scatter(x_train[:,0], x_train[:,1])
-plt.scatter(supportVectors[:,0], supportVectors[:,1], color='red')
-plt.title("Visualisation of Support Vectors (Where blue is Malignant and red is benign)")
-plt.show()
+#plt.scatter(x_train[:,0], x_train[:,1])
+#plt.scatter(supportVectors[:,0], supportVectors[:,1], color='red')
+#plt.title("Visualisation of Support Vectors (Where blue is Malignant and red is benign)")
+#plt.show()
 
 #make predictions using the test set
 predictions = classifier.predict(x_test)
@@ -103,3 +103,8 @@ plt.show()
 
 #show the classification report
 print(classification_report(y_test, predictions))
+"""
+For this particluar problem, having a high recall  value is paramount.
+As it would be incredibly dangerous to have a malignant cancer be misdiagnosed as benign
+Currently the recall is 97% and 95% for malignant and benign respectively. Not bad.
+"""
