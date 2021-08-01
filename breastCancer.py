@@ -21,7 +21,7 @@ cancer['Target'] = cancerData.target
 display(cancer.head())
 
 #check for missing values in the data
-print("Number of missing values: ", cancer.isnull().sum())
+print("Number of missing values: \n", cancer.isnull().sum())
 
 #plot the distribution of target values
 sns.set(rc={'figure.figsize':(11.7, 8.27)})
@@ -35,6 +35,10 @@ corrMatrix = cancer.corr().round(2)
 sns.heatmap(data=corrMatrix, annot=True)
 plt.show()
 
+#create a pairplot to examine the relationships between variables in more detail
+sns.pairplot(cancer, hue='Target', vars=['mean radius', 'mean concave points', 'mean area', 'mean smoothness'])
+plt.show()
+
 #########################################################
 #################### Data Splitting #####################
 #########################################################
@@ -42,17 +46,21 @@ from sklearn.model_selection import train_test_split
 
 #split data into training/test sets with 70/30 ratio
 #random_state controls how much the order of the data is randomised before splitting
-x_train, x_test, y_train, y_test = train_test_split(cancerData.data, cancerData.target, test_size=0.3, random_state=109)
+x_train, x_test, y_train, y_test = train_test_split(cancerData.data, cancerData.target, test_size=0.2, random_state=109)
+#look at the dimensions of the new datasets
+print(x_train.shape)
+print(y_train.shape)
 
 #create scatterplot for training data
 plt.scatter(x_train[:,0], x_train[:,1])
-plt.title("Scatter plot of Traing data")
+plt.title("Scatter plot of Training data")
 plt.show()
 
 #########################################################
 ######################## SVM ############################
 #########################################################
 from sklearn import svm
+from sklearn.metrics import classification_report, confusion_matrix
 
 #create classifier for the svm
 classifier = svm.SVC(kernel='linear')
@@ -82,8 +90,16 @@ supportVectors = classifier.support_vectors_
 #visualise support vectors
 plt.scatter(x_train[:,0], x_train[:,1])
 plt.scatter(supportVectors[:,0], supportVectors[:,1], color='red')
-plt.title("Visualisation of Support Vectors")
+plt.title("Visualisation of Support Vectors (Where blue is Malignant and red is benign)")
 plt.show()
 
 #make predictions using the test set
 predictions = classifier.predict(x_test)
+
+#create a confusion matrix to see how the model's prediction match the real results
+confMatrix = confusion_matrix(y_test, predictions)
+sns.heatmap(confMatrix, annot=True)
+plt.show()
+
+#show the classification report
+print(classification_report(y_test, predictions))
